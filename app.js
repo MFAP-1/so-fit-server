@@ -6,11 +6,26 @@ require("./config/db.config")();
 const app = express();
 
 app.use(express.json());
-// Não esquecer de criar variável de ambiente com o endereço do seu app React (local ou deployado no Netlify)
+// --------------------------------------------------- Não esquecer de criar variável de ambiente com o endereço do seu app React (local ou deployado no Netlify)
 app.use(cors({ origin: process.env.REACT_APP_URL }));
 
 const userRouter = require("./routes/user.routes");
 app.use("/api", userRouter);
+
+const exerciseRouter = require("./routes/exercise.routes");
+app.use("/api", exerciseRouter);
+
+// Generic route to treat errors
+app.use((err, req, res, next) => {
+  if (err) {
+    console.error(err);
+    return res.status(err.status || 500).json({
+      msg: "Internal error in the So Fit server.",
+      err: err, // -------------------------------------- DEBUGGER
+    });
+  }
+  return next();
+});
 
 app.listen(Number(process.env.PORT), () =>
   console.log(`Server up and running at port ${process.env.PORT}`)

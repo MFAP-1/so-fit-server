@@ -9,7 +9,7 @@ async function connect() {
       useUnifiedTopology: true,
       useFindAndModify: false,
     });
-    console.log("Connected to DB: ", connection.connection.name);
+    console.log("Connected to DB:", connection.connection.name);
   } catch (err) {
     console.error("Database connection error: ", err);
   }
