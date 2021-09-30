@@ -9,11 +9,15 @@ app.use(express.json());
 // --------------------------------------------------- Não esquecer de criar variável de ambiente com o endereço do seu app React (local ou deployado no Netlify)
 app.use(cors({ origin: process.env.REACT_APP_URL }));
 
+// Redirecting everything to its propers routes
 const userRouter = require("./routes/user.routes");
 app.use("/api", userRouter);
 
 const exerciseRouter = require("./routes/exercise.routes");
 app.use("/api", exerciseRouter);
+
+const workoutRouter = require("./routes/workout.routes");
+app.use("/api", workoutRouter);
 
 // Generic route to treat errors
 app.use((err, req, res, next) => {
