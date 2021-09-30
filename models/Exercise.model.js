@@ -31,77 +31,11 @@ const ExerciseSchema = new Schema({
     type: Number,
     min: 0,
     default: 0,
-    // default: function () {
-    //   const exercisePointsArr = [
-    //     {
-    //       name: "Walking",
-    //       points: 0.01,
-    //     },
-    //     {
-    //       name: "Running",
-    //       points: 0.015,
-    //     },
-    //     {
-    //       name: "Biking",
-    //       points: 0.005,
-    //     },
-    //     {
-    //       name: "Push-up",
-    //       points: 1.0,
-    //     },
-    //     {
-    //       name: "Pull-up",
-    //       points: 2.0,
-    //     },
-    //     {
-    //       name: "Chin-up",
-    //       points: 2.0,
-    //     },
-    //     {
-    //       name: "Abs",
-    //       points: 0.5,
-    //     },
-    //     {
-    //       name: "Lunges",
-    //       points: 0.5,
-    //     },
-    //     {
-    //       name: "Jumping jack",
-    //       points: 0.2,
-    //     },
-    //     {
-    //       name: "Squat",
-    //       points: 0.2,
-    //     },
-    //     {
-    //       name: "Single under",
-    //       points: 0.01,
-    //     },
-    //     {
-    //       name: "Frontal plank",
-    //       points: 0.1,
-    //     },
-    //     {
-    //       name: "Back plank",
-    //       points: 0.1,
-    //     },
-    //     {
-    //       name: "Side plank",
-    //       points: 0.1,
-    //     },
-    //   ];
-    //   const filteredObj = exercisePointsArr.filter((el) => {
-    //     return el.name === this.exerciseName;
-    //   });
-    //   console.log("entrou aqui");
-    //   // run the calculation:
-    //   return this.exerciseReps * filteredObj[0].points;
-    // },
   },
   workoutId: { type: Types.ObjectId, ref: "Workout", required: true },
 });
 
-ExerciseSchema.pre("save", function (next) {
+function getExercisePoints(exerciseName) {
   const exercisePointsArr = [
     {
       name: "Walking",
@@ -160,13 +94,21 @@ ExerciseSchema.pre("save", function (next) {
       points: 0.1,
     },
   ];
-  const filteredObj = exercisePointsArr.filter((el) => {
-    return el.name === this.exerciseName;
-  });
-  console.log("entrou aqui");
-  // run the calculation:
-  this.exerciseTotalPoints += this.exerciseReps * filteredObj[0].points;
+  return exercisePointsArr.filter((el) => {
+    return el.name === exerciseName;
+  })[0].points;
+}
+
+ExerciseSchema.pre("save", function (next) {
+  const points = getExercisePoints(this.exerciseName);
+  this.exerciseTotalPoints = this.exerciseReps * points;
   next();
+});
+
+ExerciseSchema.post("findOneAndUpdate", function (result) {
+  const points = getExercisePoints(result.exerciseName);
+  result.exerciseTotalPoints = result.exerciseReps * points;
+  result.save();
 });
 
 const ExerciseModel = model("Exercise", ExerciseSchema);

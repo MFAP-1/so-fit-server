@@ -17,7 +17,16 @@ const WorkoutSchema = new Schema({
   // references to other schemas
   exercisesId: [{ type: Types.ObjectId, ref: "Exercise" }],
   userOwnerId: { type: Types.ObjectId, ref: "User", required: true },
+  workoutPoints: {
+    type: Number,
+    required: true,
+    default: 0,
+    min: 0,
+  },
 });
+
+
+
 
 const WorkoutModel = model("Workout", WorkoutSchema);
 
