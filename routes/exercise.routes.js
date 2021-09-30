@@ -1,33 +1,29 @@
 const router = require("express").Router();
 
-const express = require("express");
-// const router = express.Router();
-
-// const isAuthenticated = require("../middlewares/isAuthenticated");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 // const attachCurrentUser = require("../middlewares/attachCurrentUser");
 
 const ExerciseModel = require("../models/Exercise.model");
-
-// const ProjectModel = require("../models/Project.model");
+const WorkoutModel = require("../models/Workout.model");
 
 // POST a new exercise [route 01]
-router.post("/exercise", async (req, res, next) => {
+router.post("/exercise", isAuthenticated, async (req, res, next) => {
   try {
     const result = await ExerciseModel.create(req.body);
 
-    // Adicionado a referência da tarefa recém-criada no projeto
-    // await ProjectModel.updateOne(
-    //   { _id: req.body.projectId },
-    //   { $push: { tasks: result._id } }
-    // ); // O operador $push serve para adicionar um novo elemento à uma array no documento
+    // Adding the exercise to the current workout
+    await WorkoutModel.updateOne(
+      { _id: req.body.workoutId },
+      { $push: { exercisesId: result._id } }
+    );
     return res.status(201).json(result);
   } catch (err) {
     return next(err);
   }
 });
 
-// GET a new exercise by its ID [route 02]
-router.get("/exercise/:id", async (req, res, next) => {
+// GET an exercise by its ID [route 02]
+router.get("/exercise/:id", isAuthenticated, async (req, res, next) => {
   try {
     const result = await ExerciseModel.findOne({ _id: req.params.id });
     if (!result) {
@@ -39,7 +35,8 @@ router.get("/exercise/:id", async (req, res, next) => {
   }
 });
 
-router.patch("/exercise/edit/:id", async (req, res, next) => {
+// UPDATE an exercise by its ID [route 03]
+router.patch("/exercise/edit/:id", isAuthenticated, async (req, res, next) => {
   try {
     const result = await ExerciseModel.findOneAndUpdate(
       { _id: req.params.id },
@@ -55,18 +52,21 @@ router.patch("/exercise/edit/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/exercise/:id", async (req, res, next) => {
-  try {
-    const result = await ExerciseModel.deleteOne({ _id: req.params.id });
-    if (result.deletedCount < 1) {
-      return res.status(404).json({ msg: "Exercise not found" });
+// DELETE a new exercise by its ID [route 04]
+router.delete(
+  "/exercise/delete/:id",
+  isAuthenticated,
+  async (req, res, next) => {
+    try {
+      const result = await ExerciseModel.deleteOne({ _id: req.params.id });
+      if (result.deletedCount < 1) {
+        return res.status(404).json({ msg: "Exercise not found" });
+      }
+      return res.status(200).json({});
+    } catch (err) {
+      return next(err);
     }
-    return res.status(200).json({});
-  } catch (err) {
-    return next(err);
   }
-});
-
-module.exports = router;
+);
 
 module.exports = router;

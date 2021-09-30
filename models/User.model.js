@@ -17,6 +17,7 @@ const UserSchema = new Schema({
   description: {
     type: String,
     trim: true,
+    maxlength: 500,
   },
   passwordHash: { type: String, required: true },
   role: {

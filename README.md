@@ -4,8 +4,8 @@
 
 ## About the application
 
-So Fit. Your fitness social network. Finally!
-It is a ...
+So Fit. Your fitness social network. Finally! <br/>
+It is a ...<br/>
 This repository is only for the server (backend). To see the frontend check: <a href="/">So Fit frontend</a>.
 
 ## Test it now!
