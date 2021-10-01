@@ -83,7 +83,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Route to GET all the users profiles information [route 03]
+// Route to GET the user profile information [route 03]
 router.get("/profile", isAuthenticated, attachCurrentUser, (req, res) => {
   try {
     // Check if user is logged using middleware attachCurrentUser
@@ -99,5 +99,27 @@ router.get("/profile", isAuthenticated, attachCurrentUser, (req, res) => {
     return res.status(500).json({ msg: JSON.stringify(err) });
   }
 });
+
+//Route to UPDATE the profile user information [route 04]
+router.patch(
+  "/profile/edit/:id",
+  isAuthenticated,
+  attachCurrentUser,
+  async (req, res, next) => {
+    try {
+      const result = await UserModel.findOneAndUpdate(
+        { _id: req.params.id },
+        { $set: { ...req.body } },
+        { new: true, runValidators: true }
+      );
+      if (!result) {
+        return res.status(404).json({ msg: "User not found" });
+      }
+      return res.status(200).json(result);
+    } catch (err) {
+      return next(err);
+    }
+  }
+);
 
 module.exports = router;
