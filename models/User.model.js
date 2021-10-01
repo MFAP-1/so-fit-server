@@ -18,6 +18,8 @@ const UserSchema = new Schema({
     type: String,
     trim: true,
     maxlength: 500,
+    required:true,
+    default: "Sem descrição",
   },
   passwordHash: { type: String, required: true },
   role: {
@@ -39,9 +41,7 @@ const UserSchema = new Schema({
 UserSchema.pre("save", function (next) {
   this.name =
     this.name.trim()[0].toUpperCase() + this.name.slice(1).toLowerCase();
-  // if (this.description === "") {
-  //   this.description = "O produto '" + this.name + "' ainda não tem descrição.";
-  // }
+ 
   next();
 });
 

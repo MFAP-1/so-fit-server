@@ -1,8 +1,8 @@
 const { Schema, model, Types } = require("mongoose");
 
 const WorkoutSchema = new Schema({
-  name: { type: String, required: true, trim: true },
-  description: { type: String, trim: true, maxlength: 500 },
+  name: { type: String, required: true, trim: true, maxlength:30 },
+  description: { type: String, trim: true, maxlength: 300 },
   status: {
     type: String,
     enum: ["Planned", "Done!"],
