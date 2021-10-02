@@ -58,6 +58,17 @@ router.delete(
   isAuthenticated,
   async (req, res, next) => {
     try {
+      const workoutFound = await ExerciseModel.findOne(
+        {
+          _id: req.params.id,
+        },
+        { workoutId: 1, _id: 0 }
+      );
+      console.log(workoutFound);
+      await WorkoutModel.updateOne(
+        { _id: workoutFound.workoutId },
+        { $pull: { exercisesId: req.params.id } }
+      );
       const result = await ExerciseModel.deleteOne({ _id: req.params.id });
       if (result.deletedCount < 1) {
         return res.status(404).json({ msg: "Exercise not found" });
