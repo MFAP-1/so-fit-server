@@ -6,7 +6,19 @@ const generateToken = require("../config/jwt.config");
 const isAuthenticated = require("../middlewares/isAuthenticated");
 const attachCurrentUser = require("../middlewares/attachCurrentUser");
 
+
 const salt_rounds = 10;
+
+//Image upload
+const uploader = require("../config/cloudinary.config")
+router.post("/image-upload", uploader.single("pictureUrl2"), (req, res, next) => {
+  if(!req.file) {
+    return next(new Error("Image upload Failed"))
+  }
+  console.log(req.file)
+  return res.status(201).json({url:req.file.path})
+})
+
 
 // Create new user [route 01]
 router.post("/signup", async (req, res) => {
