@@ -34,7 +34,7 @@ router.get("/users", isAuthenticated, attachCurrentUser, async (req, res) => {
 })
 
 
-//Route to Follow User (add follower to user) (similar to add exercise to workout)
+//Route to Follow User (add follower to user)
 
 router.post("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
   try {
@@ -60,7 +60,28 @@ router.post("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, re
     }
 });
 
- 
+//Route to Unfollow User (remove follower from user)
+
+router.delete("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
+  try {
+
+    await UserModel.updateOne(
+      { _id: req.currentUser._id },
+      { $pull: { followingId: req.params.id } }
+    );
+
+    await UserModel.updateOne(
+      { _id: req.params.id  },
+      { $pull: { followersId: req.currentUser._id } }
+    );
+    
+    return res.status(201).json("Unfollowed");
+  } catch {
+        return res.status(500).json({ msg: JSON.stringify(err) });
+    }
+});
+
+
 // Create new user [route 02]
 router.post("/signup", async (req, res) => {
   try {
