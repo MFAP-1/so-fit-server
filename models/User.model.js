@@ -36,7 +36,10 @@ const UserSchema = new Schema({
   },
   soFitPoints: { type: Number, min: 0, default: 0 },
   level: { type: Number, min: 1, default: 1 },
+  followingId:[{type: Types.ObjectId, ref:"User"}], //Precisa ser required?
+  followersId :[{type: Types.ObjectId, ref:"User"}] //Precisa ser required?
 });
+
 
 UserSchema.pre("save", function (next) {
   this.name =

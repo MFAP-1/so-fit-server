@@ -22,6 +22,45 @@ router.post(
   }
 );
 
+//Route to get all users
+router.get("/users", isAuthenticated, attachCurrentUser, async (req, res) => {
+  try {
+    const users = await UserModel.find()
+    return res.status(201).json(users);
+  } catch {
+    console.error(err);
+    return res.status(500).json({ msg: JSON.stringify(err) });
+  }
+})
+
+
+//Route to Follow User (add follower to user) (similar to add exercise to workout)
+
+router.post("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
+  try {
+    // console.log(req.params.id)
+    // const follow = await UserModel.findOne({_id: req.params.id}); 
+    // console.log("passou")
+    // console.log(req.currentUser._id)
+    // console.log(follow)
+
+    await UserModel.updateOne(
+      { _id: req.currentUser._id },
+      { $push: { followingId: req.params.id } }
+    );
+
+    await UserModel.updateOne(
+      { _id: req.params.id  },
+      { $push: { followersId: req.currentUser._id } }
+    );
+    
+    return res.status(201).json("Followed");
+  } catch {
+        return res.status(500).json({ msg: JSON.stringify(err) });
+    }
+});
+
+ 
 // Create new user [route 02]
 router.post("/signup", async (req, res) => {
   try {
@@ -100,8 +139,10 @@ router.post("/login", async (req, res) => {
 // Route to GET the user profile information [route 04]
 router.get("/profile", isAuthenticated, attachCurrentUser, (req, res) => {
   try {
+    //Populate feito no attachCurrentUser.js 
     // Check if user is logged using middleware attachCurrentUser
     const loggedInUser = req.currentUser;
+    console.log(loggedInUser)
 
     if (loggedInUser) {
       return res.status(200).json(loggedInUser);
