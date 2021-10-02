@@ -64,7 +64,6 @@ router.delete(
         },
         { workoutId: 1, _id: 0 }
       );
-      console.log(workoutFound);
       await WorkoutModel.updateOne(
         { _id: workoutFound.workoutId },
         { $pull: { exercisesId: req.params.id } }

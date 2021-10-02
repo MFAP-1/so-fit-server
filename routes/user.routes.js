@@ -8,7 +8,21 @@ const attachCurrentUser = require("../middlewares/attachCurrentUser");
 
 const salt_rounds = 10;
 
-// Create new user [route 01]
+//Image upload [route 01]
+const uploader = require("../config/cloudinary.config");
+router.post(
+  "/image-upload",
+  uploader.single("pictureUrl2"),
+  (req, res, next) => {
+    if (!req.file) {
+      return next(new Error("Image upload Failed"));
+    }
+    console.log(req.file);
+    return res.status(201).json({ url: req.file.path });
+  }
+);
+
+// Create new user [route 02]
 router.post("/signup", async (req, res) => {
   try {
     // Recover password from req.body
@@ -45,7 +59,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// Login route [route 02]
+// Login route [route 03]
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -83,7 +97,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Route to GET the user profile information [route 03]
+// Route to GET the user profile information [route 04]
 router.get("/profile", isAuthenticated, attachCurrentUser, (req, res) => {
   try {
     // Check if user is logged using middleware attachCurrentUser
@@ -100,7 +114,7 @@ router.get("/profile", isAuthenticated, attachCurrentUser, (req, res) => {
   }
 });
 
-//Route to UPDATE the profile user information [route 04]
+//Route to UPDATE the profile user information [route 05]
 router.patch(
   "/profile/edit/:id",
   isAuthenticated,

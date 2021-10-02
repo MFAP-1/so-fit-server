@@ -1,7 +1,7 @@
 const { Schema, model, Types } = require("mongoose");
 
 const WorkoutSchema = new Schema({
-  name: { type: String, required: true, trim: true, maxlength:30 },
+  name: { type: String, required: true, trim: true, maxlength: 30 },
   description: { type: String, trim: true, maxlength: 300 },
   status: {
     type: String,
@@ -24,9 +24,6 @@ const WorkoutSchema = new Schema({
     min: 0,
   },
 });
-
-
-
 
 const WorkoutModel = model("Workout", WorkoutSchema);
 
