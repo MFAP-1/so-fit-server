@@ -22,7 +22,85 @@ router.post(
   }
 );
 
-// Create new user [route 02]
+//Route to view specific user by ID [route 02]
+router.get("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
+  try {
+    const user = await UserModel.findOne(
+      { _id: req.params.id })
+
+      return res.status(201).json(user);
+  } catch {
+    console.error(err);
+    return res.status(500).json({ msg: JSON.stringify(err) });
+  }
+})
+
+
+//Route to get all users [route 03]
+router.get("/users", isAuthenticated, attachCurrentUser, async (req, res) => {
+  try {
+    const users = await UserModel.find()
+    return res.status(201).json(users);
+  } catch {
+    console.error(err);
+    return res.status(500).json({ msg: JSON.stringify(err) });
+  }
+})
+
+
+//Route to Follow User [route 04]
+
+router.post("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
+  try {
+    console.log(req.currentUser.followingId.length)
+     if(req.currentUser._id == req.params.id ){
+      return res.status(400).json( "Cannot follow yoursel")
+     }
+
+      await UserModel.updateOne(
+      { _id: req.currentUser._id },
+      { $push: { followingId: req.params.id } }
+    );
+
+    await UserModel.updateOne(
+      { _id: req.params.id  },
+      { $push: { followersId: req.currentUser._id } }
+    );
+    
+    return res.status(201).json("Followed");
+  } catch {
+        return res.status(500).json({ msg: JSON.stringify(err) });
+    }
+});
+
+//Route to Unfollow User [route 05]
+
+router.delete("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
+  try {
+    if(req.currentUser._id == req.params.id ){
+      return res.status(400).json("Cannot unfollow yourself")
+     }
+
+
+
+    await UserModel.updateOne(
+      { _id: req.currentUser._id },
+      { $pull: { followingId: req.params.id } }
+    );
+
+    await UserModel.updateOne(
+      { _id: req.params.id  },
+      { $pull: { followersId: req.currentUser._id } }
+    );
+    
+    return res.status(201).json("Unfollowed");
+  } catch {
+        return res.status(500).json({ msg: JSON.stringify(err) });
+    }
+});
+
+
+// Create new user [route 06]
 router.post("/signup", async (req, res) => {
   try {
     // Recover password from req.body
@@ -59,7 +137,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// Login route [route 03]
+// Login route [route 07]
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -97,11 +175,13 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Route to GET the user profile information [route 04]
+// Route to GET the user profile information [route 08]
 router.get("/profile", isAuthenticated, attachCurrentUser, (req, res) => {
   try {
+    //Populate feito no attachCurrentUser.js 
     // Check if user is logged using middleware attachCurrentUser
     const loggedInUser = req.currentUser;
+    console.log(loggedInUser)
 
     if (loggedInUser) {
       return res.status(200).json(loggedInUser);
@@ -114,7 +194,7 @@ router.get("/profile", isAuthenticated, attachCurrentUser, (req, res) => {
   }
 });
 
-//Route to UPDATE the profile user information [route 05]
+//Route to UPDATE the profile user information [route 09]
 router.patch(
   "/profile/edit/:id",
   isAuthenticated,
