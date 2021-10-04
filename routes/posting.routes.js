@@ -127,7 +127,7 @@ router.post(
   }
 );
 
-//Route to Unlike Post [route 05]
+//Route to Unlike Post [route 07]
 
 router.delete(
   "/post/like/:id",
@@ -140,7 +140,7 @@ router.delete(
         { $pull: { likes: req.currentUser._id } }
       );
 
-      return res.status(201).json("liked");
+      return res.status(201).json("disliked");
     } catch {
       return res.status(500).json({ msg: JSON.stringify(err) });
     }
@@ -148,3 +148,4 @@ router.delete(
 );
 
 module.exports = router;
+
