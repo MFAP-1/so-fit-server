@@ -39,7 +39,7 @@ const UserSchema = new Schema({
   level: { type: Number, min: 1, default: 1 },
   followingId: [{ type: Types.ObjectId, ref: "User" }],
   followersId: [{ type: Types.ObjectId, ref: "User" }],
-});
+  });
 
 UserSchema.pre("save", function (next) {
   this.name =

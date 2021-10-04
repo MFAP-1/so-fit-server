@@ -47,7 +47,6 @@ router.get("/users", isAuthenticated, attachCurrentUser, async (req, res) => {
   }
 })
 
-
 //Route to Follow User [route 04]
 
 router.post("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
