@@ -81,8 +81,6 @@ router.delete("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, 
       return res.status(400).json("Cannot unfollow yourself")
      }
 
-
-
     await UserModel.updateOne(
       { _id: req.currentUser._id },
       { $pull: { followingId: req.params.id } }
