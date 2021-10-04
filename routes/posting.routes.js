@@ -35,8 +35,17 @@ router.get(
       try {
         const result = await PostingModel.findOne({
           _id: req.params.id
-        }).populate("workoutId") 
-        .populate("postedBy" ) 
+        }).populate("postedBy" )
+        .populate({
+          path:"workoutId",
+          populate: [
+            {
+              path:"exercisesId"
+            }
+          ]
+        }) 
+                
+        
         if (!result) {
             return res.status(404).json({ msg: "Posting not found" });
           }
