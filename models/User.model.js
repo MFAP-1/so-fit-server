@@ -5,6 +5,7 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     trim: true,
+    maxlength: 30
   },
   email: {
     type: String,
@@ -17,7 +18,7 @@ const UserSchema = new Schema({
   description: {
     type: String,
     trim: true,
-    maxlength: 500,
+    maxlength: 300,
     required:true,
     default: "Sem descrição",
   },
@@ -36,8 +37,9 @@ const UserSchema = new Schema({
   },
   soFitPoints: { type: Number, min: 0, default: 0 },
   level: { type: Number, min: 1, default: 1 },
-  followingId:[{type: Types.ObjectId, ref:"User"}], //Precisa ser required?
-  followersId :[{type: Types.ObjectId, ref:"User"}] //Precisa ser required?
+  followingId:[{type: Types.ObjectId, ref:"User"}], 
+  followersId :[{type: Types.ObjectId, ref:"User"}] 
+  
 });
 
 

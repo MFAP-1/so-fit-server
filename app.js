@@ -19,6 +19,9 @@ app.use("/api", exerciseRouter);
 const workoutRouter = require("./routes/workout.routes");
 app.use("/api", workoutRouter);
 
+const postingRouter = require("./routes/posting.routes");
+app.use("/api", postingRouter);
+
 // Generic route to treat errors
 app.use((err, req, res, next) => {
   if (err) {
