@@ -23,80 +23,91 @@ router.post(
 );
 
 //Route to view specific user by ID [route 02]
-router.get("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
-  try {
-    const user = await UserModel.findOne(
-      { _id: req.params.id })
+router.get(
+  "/user/view/:id",
+  isAuthenticated,
+  attachCurrentUser,
+  async (req, res) => {
+    try {
+      const user = await UserModel.findOne({ _id: req.params.id });
 
-      return res.status(201).json(user);
-  } catch {
-    console.error(err);
-    return res.status(500).json({ msg: JSON.stringify(err) });
+      return res.status(200).json(user);
+    } catch {
+      console.error(err);
+      return res.status(500).json({ msg: JSON.stringify(err) });
+    }
   }
-})
+);
 
-
-//Route to get all users [route 03]
+// Route to get all users [route 03]
 router.get("/users", isAuthenticated, attachCurrentUser, async (req, res) => {
   try {
-    const users = await UserModel.find()
-    return res.status(201).json(users);
+    const users = await UserModel.find();
+    return res.status(200).json(users);
   } catch {
     console.error(err);
     return res.status(500).json({ msg: JSON.stringify(err) });
   }
-})
-
+});
 
 //Route to Follow User [route 04]
 
-router.post("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
-  try {
-    console.log(req.currentUser.followingId.length)
-     if(req.currentUser._id == req.params.id ){
-      return res.status(400).json( "Cannot follow yoursel")
-     }
+router.post(
+  "/user/view/:id",
+  isAuthenticated,
+  attachCurrentUser,
+  async (req, res) => {
+    try {
+      console.log(req.currentUser.followingId.length);
+      if (req.currentUser._id == req.params.id) {
+        return res.status(400).json("Cannot follow yoursel");
+      }
 
       await UserModel.updateOne(
-      { _id: req.currentUser._id },
-      { $push: { followingId: req.params.id } }
-    );
+        { _id: req.currentUser._id },
+        { $push: { followingId: req.params.id } }
+      );
 
-    await UserModel.updateOne(
-      { _id: req.params.id  },
-      { $push: { followersId: req.currentUser._id } }
-    );
-    
-    return res.status(201).json("Followed");
-  } catch {
-        return res.status(500).json({ msg: JSON.stringify(err) });
+      await UserModel.updateOne(
+        { _id: req.params.id },
+        { $push: { followersId: req.currentUser._id } }
+      );
+
+      return res.status(201).json("Followed");
+    } catch {
+      return res.status(500).json({ msg: JSON.stringify(err) });
     }
-});
+  }
+);
 
 //Route to Unfollow User [route 05]
 
-router.delete("/user/view/:id", isAuthenticated, attachCurrentUser, async (req, res) => {
-  try {
-    if(req.currentUser._id == req.params.id ){
-      return res.status(400).json("Cannot unfollow yourself")
-     }
+router.delete(
+  "/user/view/:id",
+  isAuthenticated,
+  attachCurrentUser,
+  async (req, res) => {
+    try {
+      if (req.currentUser._id == req.params.id) {
+        return res.status(400).json("Cannot unfollow yourself");
+      }
 
-    await UserModel.updateOne(
-      { _id: req.currentUser._id },
-      { $pull: { followingId: req.params.id } }
-    );
+      await UserModel.updateOne(
+        { _id: req.currentUser._id },
+        { $pull: { followingId: req.params.id } }
+      );
 
-    await UserModel.updateOne(
-      { _id: req.params.id  },
-      { $pull: { followersId: req.currentUser._id } }
-    );
-    
-    return res.status(201).json("Unfollowed");
-  } catch {
-        return res.status(500).json({ msg: JSON.stringify(err) });
+      await UserModel.updateOne(
+        { _id: req.params.id },
+        { $pull: { followersId: req.currentUser._id } }
+      );
+
+      return res.status(201).json("Unfollowed");
+    } catch {
+      return res.status(500).json({ msg: JSON.stringify(err) });
     }
-});
-
+  }
+);
 
 // Create new user [route 06]
 router.post("/signup", async (req, res) => {
@@ -176,10 +187,10 @@ router.post("/login", async (req, res) => {
 // Route to GET the user profile information [route 08]
 router.get("/profile", isAuthenticated, attachCurrentUser, (req, res) => {
   try {
-    //Populate feito no attachCurrentUser.js 
+    //Populate feito no attachCurrentUser.js
     // Check if user is logged using middleware attachCurrentUser
     const loggedInUser = req.currentUser;
-    console.log(loggedInUser)
+    console.log(loggedInUser);
 
     if (loggedInUser) {
       return res.status(200).json(loggedInUser);
@@ -213,5 +224,20 @@ router.patch(
     }
   }
 );
+
+// Route to get all users for the leaderboard [route 10]
+router.get("/users-leaderboard/pg/:currentPg", async (req, res) => {
+  try {
+    const LIMIT = 5;
+    const users = await UserModel.find()
+      .limit(LIMIT)
+      .skip((req.params.currentPg - 1) * LIMIT)
+      .sort({ soFitPoints: -1 });
+    return res.status(200).json(users);
+  } catch {
+    console.error(err);
+    return res.status(500).json({ msg: JSON.stringify(err) });
+  }
+});
 
 module.exports = router;
