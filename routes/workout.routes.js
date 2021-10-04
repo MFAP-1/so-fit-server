@@ -67,7 +67,29 @@ router.get("/workout/:id", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// UPDATE workout by its ID [route 04]
+// GET a workout  by its ID [route 04]
+router.get(
+  "/workout/filtered-for-dup/:id",
+  isAuthenticated,
+  async (req, res, next) => {
+    try {
+      const result = await WorkoutModel.findOne(
+        {
+          _id: req.params.id,
+        },
+        { _id: 0 }
+      );
+      if (!result) {
+        return res.status(404).json({ msg: "Workout not found" });
+      }
+      return res.status(200).json(result);
+    } catch (err) {
+      return next(err);
+    }
+  }
+);
+
+// UPDATE workout by its ID [route 05]
 router.patch("/workout/edit/:id", isAuthenticated, async (req, res, next) => {
   try {
     const result = await WorkoutModel.findOneAndUpdate(
@@ -84,7 +106,7 @@ router.patch("/workout/edit/:id", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// Delete workout by its ID [route 05]
+// Delete workout by its ID [route 06]
 router.delete(
   "/workout/delete/:id",
   isAuthenticated,
