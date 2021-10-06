@@ -120,7 +120,7 @@ router.post(
         { $push: { likes: req.currentUser._id } }
       );
 
-      return res.status(201).json("liked");
+      return res.status(201).json({ msg: "liked" });
     } catch {
       return res.status(500).json({ msg: JSON.stringify(err) });
     }
@@ -140,7 +140,7 @@ router.delete(
         { $pull: { likes: req.currentUser._id } }
       );
 
-      return res.status(201).json("disliked");
+      return res.status(201).json({ msg: "disliked" });
     } catch {
       return res.status(500).json({ msg: JSON.stringify(err) });
     }
@@ -166,9 +166,9 @@ router.put(
         { $push: { comments: comment }, new: true }
       ).populate("postedBy");
 
-      return res.status(201).json("comment");
-    } catch {
-      console.log("erro");
+      return res.status(201).json({ msg: "comment" });
+    } catch (err) {
+      console.error(err);
     }
   }
 );
