@@ -17,7 +17,7 @@ router.post(
     if (!req.file) {
       return next(new Error("Image upload Failed"));
     }
-    console.log(req.file);
+    // console.log(req.file); //--------------------------------- DEBUGGER
     return res.status(201).json({ url: req.file.path });
   }
 );
@@ -29,8 +29,9 @@ router.get(
   attachCurrentUser,
   async (req, res) => {
     try {
-      const user = await UserModel.findOne({ _id: req.params.id }).populate("followingId").populate("followersId")
-   
+      const user = await UserModel.findOne({ _id: req.params.id })
+        .populate("followingId")
+        .populate("followersId");
 
       return res.status(200).json(user);
     } catch {
@@ -59,7 +60,7 @@ router.post(
   attachCurrentUser,
   async (req, res) => {
     try {
-      console.log(req.currentUser.followingId.length);
+      // console.log(req.currentUser.followingId.length); //--------------------------------- DEBUGGER
       if (req.currentUser._id == req.params.id) {
         return res.status(400).json("Cannot follow yoursel");
       }
@@ -155,7 +156,7 @@ router.post("/login", async (req, res) => {
     // Checking if the user is in the database by its email
     const user = await UserModel.findOne({ email });
 
-    console.log(user);
+    // console.log(user); //--------------------------------- DEBUGGER
 
     // If user not found, meaning not sign in the database
     if (!user) {
@@ -191,7 +192,7 @@ router.get("/profile", isAuthenticated, attachCurrentUser, (req, res) => {
     //Populate feito no attachCurrentUser.js
     // Check if user is logged using middleware attachCurrentUser
     const loggedInUser = req.currentUser;
-    console.log(loggedInUser);
+    // console.log(loggedInUser); //--------------------------------- DEBUGGER
 
     if (loggedInUser) {
       return res.status(200).json(loggedInUser);

@@ -5,7 +5,7 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    maxlength: 30,
+    maxlength: 15,
   },
   email: {
     type: String,
@@ -39,7 +39,7 @@ const UserSchema = new Schema({
   level: { type: Number, min: 1, default: 1 },
   followingId: [{ type: Types.ObjectId, ref: "User" }],
   followersId: [{ type: Types.ObjectId, ref: "User" }],
-  });
+});
 
 UserSchema.pre("save", function (next) {
   this.name =
@@ -53,7 +53,6 @@ function determinateLevelBasedOnPoints(amountOfPoints) {
   const experienceTable = [1000, 2050, 4200, 8600, 17600, 36080, 73000]; // pre-defined required amount of points for leveling up
   let level = 1;
   for (let i = 0; i < experienceTable.length; i++) {
-    console.log(amountOfPoints, "pontos no for loop");
     if (amountOfPoints > experienceTable[i]) {
       level = i + 2; // +2 cause in the 0 index is the level up from lvl 1 to 2. And so on.
     }
