@@ -147,5 +147,30 @@ router.delete(
   }
 );
 
-module.exports = router;
+//Route to post a comment [route 08]
+router.put(
+  "/post/comment/:id",
+  isAuthenticated,
+  attachCurrentUser,
+  async (req, res) => {
+    try {
+      const comment = {
+        text: req.body.text,
+        postedBy: req.currentUser._id,
+        postedByName: req.body.postedByName,
+        postedByPicture: req.body.postedByPicture,
+      };
 
+      await PostingModel.updateOne(
+        { _id: req.params.id },
+        { $push: { comments: comment }, new: true }
+      ).populate("postedBy");
+
+      return res.status(201).json("comment");
+    } catch {
+      console.log("erro");
+    }
+  }
+);
+
+module.exports = router;
