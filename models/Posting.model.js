@@ -20,9 +20,11 @@ const PostingSchema = new Schema({
    createdDate: {type:Date, default:Date.now},
    likes: [{type: Types.ObjectId, ref:"User"}],
    comments:[{
-       type:String,
+       text: {type:String},
        createdDate:{ type:Date, default:Date.now},
-       postedBy :[{type: Types.ObjectId, ref:"User"}]
+       postedBy : {type: Types.ObjectId, ref:"User"},
+       postedByName:{type:String},
+       postedByPicture:{type:String},
    }]
 });
 

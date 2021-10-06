@@ -29,7 +29,8 @@ router.get(
   attachCurrentUser,
   async (req, res) => {
     try {
-      const user = await UserModel.findOne({ _id: req.params.id });
+      const user = await UserModel.findOne({ _id: req.params.id }).populate("followingId").populate("followersId")
+   
 
       return res.status(200).json(user);
     } catch {
