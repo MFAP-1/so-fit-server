@@ -10,7 +10,7 @@ This repository is only for the server (backend). To see the frontend check: <a 
 
 ## Test it now!
 
-Just follow the live link: <a href="/">So Fit</a>.
+Just follow the live link: <a href="https://github.com/rguima17/so-fit-client">So Fit</a>.
 
 ## Installing
 
@@ -24,7 +24,7 @@ This is an open source project, feel free to fork it, make improvements and subm
 
 ## Find more about this project
 
-To see a slide presentation, just follow the link: <a href="......">So Fit presentation</a>.
+To see a slide presentation, just follow the link: <a href="https://so-fit-app.netlify.app">So Fit presentation</a>.
 For an enhanced experience, watch it in the 'presentation mode'. There are important transitions.
 
 ## Disclaimer
@@ -33,6 +33,6 @@ The So Fit project was inspired.... , and it was built solely for education purp
 
 You can find sprites and sounds in the following links:
 
-> - x
+> - https://www.flaticon.com/authors/those-icons
 > - x
 > - x
