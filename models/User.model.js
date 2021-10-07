@@ -33,7 +33,7 @@ const UserSchema = new Schema({
     type: String,
     trim: true,
     default:
-      "https://www.kindpng.com/picc/m/421-4212275_transparent-default-avatar-png-avatar-img-png-download.png",
+      "https://res.cloudinary.com/djjhqmowr/image/upload/v1633642015/photosSofit/20944529_hbqvm9.jpg",
   },
   soFitPoints: { type: Number, min: 0, default: 0 },
   level: { type: Number, min: 1, default: 1 },
@@ -50,7 +50,9 @@ UserSchema.pre("save", function (next) {
 
 // Updating the level. Checking at every change in the soFiPoints value
 function determinateLevelBasedOnPoints(amountOfPoints) {
-  const experienceTable = [ 300, 700, 1000, 1500, 2050, 4200, 8600, 17600, 36080, 73000]; // pre-defined required amount of points for leveling up
+  const experienceTable = [
+    300, 700, 1000, 1500, 2050, 4200, 8600, 17600, 36080, 73000,
+  ]; // pre-defined required amount of points for leveling up
   let level = 1;
   for (let i = 0; i < experienceTable.length; i++) {
     if (amountOfPoints > experienceTable[i]) {
