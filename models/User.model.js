@@ -33,7 +33,7 @@ const UserSchema = new Schema({
     type: String,
     trim: true,
     default:
-      "https://res.cloudinary.com/djjhqmowr/image/upload/v1633642015/photosSofit/20944529_hbqvm9.jpg",
+      "https://res.cloudinary.com/djjhqmowr/image/upload/v1633642007/photosSofit/exerciseVector_ivn8zl.png",
   },
   soFitPoints: { type: Number, min: 0, default: 0 },
   level: { type: Number, min: 1, default: 1 },
