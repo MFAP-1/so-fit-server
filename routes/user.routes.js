@@ -125,7 +125,7 @@ router.post("/signup", async (req, res) => {
       )
     ) {
       return res.status(400).json({
-        msg: "Password is required and must have at least 8 characters, uppercase and lowercase letters, numbers and special characters."
+        msg: "Password is required and must have at least 8 characters, uppercase and lowercase letters, numbers and special characters.",
       });
     }
 
@@ -144,7 +144,9 @@ router.post("/signup", async (req, res) => {
     return res.status(201).json(result);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ msg: "Invalid email/username. Please choose a different one" });
+    return res
+      .status(500)
+      .json({ msg: "Invalid email/username. Please choose a different one" });
   }
 });
 
@@ -230,7 +232,7 @@ router.patch(
 // Route to get all users for the leaderboard [route 10]
 router.get("/users-leaderboard/pg/:currentPg", async (req, res) => {
   try {
-    const LIMIT = 5;
+    const LIMIT = 10;
     const users = await UserModel.find()
       .limit(LIMIT)
       .skip((req.params.currentPg - 1) * LIMIT)

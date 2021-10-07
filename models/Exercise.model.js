@@ -3,7 +3,7 @@ const { Schema, model, Types } = require("mongoose");
 const ExerciseSchema = new Schema({
   category: {
     type: String,
-    enum: ["Cardio", "Bike", "Body-workout"],
+    enum: ["Cardio", "Bike", "Body-workout", "Rhythm Sports", "Team Sports"],
     required: true,
   },
   exerciseName: {
@@ -11,18 +11,36 @@ const ExerciseSchema = new Schema({
     enum: [
       "Walking",
       "Running",
+      "Cross country",
+
       "Biking",
+      "Mountain bike",
+
       "Push-up",
       "Pull-up",
       "Chin-up",
-      "Abs",
       "Lunges",
       "Jumping jack",
       "Squat",
       "Single under",
+      "Abs",
+      "Leg raise",
+      "Mountain climber",
       "Frontal plank",
       "Back plank",
       "Side plank",
+      "Skipping",
+
+      "Zumba",
+      "Yoga",
+      "Spinning",
+      "Jumping",
+
+      "Basketball",
+      "Football",
+      "Tennis",
+      "Handball",
+      "Volleyball",
     ],
     required: true,
   },
@@ -46,9 +64,19 @@ function getExercisePoints(exerciseName) {
       points: 0.015,
     },
     {
+      name: "Cross country",
+      points: 0.015,
+    },
+
+    {
       name: "Biking",
       points: 0.005,
     },
+    {
+      name: "Mountain bike",
+      points: 0.01,
+    },
+
     {
       name: "Push-up",
       points: 1.0,
@@ -61,10 +89,7 @@ function getExercisePoints(exerciseName) {
       name: "Chin-up",
       points: 2.0,
     },
-    {
-      name: "Abs",
-      points: 0.5,
-    },
+
     {
       name: "Lunges",
       points: 0.5,
@@ -82,6 +107,18 @@ function getExercisePoints(exerciseName) {
       points: 0.01,
     },
     {
+      name: "Abs",
+      points: 0.5,
+    },
+    {
+      name: "Leg raise",
+      points: 0.5,
+    },
+    {
+      name: "Mountain climber",
+      points: 0.25,
+    },
+    {
       name: "Frontal plank",
       points: 0.1,
     },
@@ -92,6 +129,48 @@ function getExercisePoints(exerciseName) {
     {
       name: "Side plank",
       points: 0.1,
+    },
+    {
+      name: "Skipping",
+      points: 0.1,
+    },
+
+    {
+      name: "Zumba",
+      points: 1.5,
+    },
+    {
+      name: "Yoga",
+      points: 1.5,
+    },
+    {
+      name: "Spinning",
+      points: 2.0,
+    },
+    {
+      name: "Jumping",
+      points: 2.0,
+    },
+
+    {
+      name: "Basketball",
+      points: 2.0,
+    },
+    {
+      name: "Football",
+      points: 2.0,
+    },
+    {
+      name: "Tennis",
+      points: 1.5,
+    },
+    {
+      name: "Handball",
+      points: 2.0,
+    },
+    {
+      name: "Volleyball",
+      points: 2.0,
     },
   ];
   return exercisePointsArr.filter((el) => {
