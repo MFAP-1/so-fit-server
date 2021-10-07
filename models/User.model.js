@@ -50,7 +50,7 @@ UserSchema.pre("save", function (next) {
 
 // Updating the level. Checking at every change in the soFiPoints value
 function determinateLevelBasedOnPoints(amountOfPoints) {
-  const experienceTable = [1000, 2050, 4200, 8600, 17600, 36080, 73000]; // pre-defined required amount of points for leveling up
+  const experienceTable = [ 300, 700, 1000, 1500, 2050, 4200, 8600, 17600, 36080, 73000]; // pre-defined required amount of points for leveling up
   let level = 1;
   for (let i = 0; i < experienceTable.length; i++) {
     if (amountOfPoints > experienceTable[i]) {

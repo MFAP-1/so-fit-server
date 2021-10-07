@@ -125,7 +125,7 @@ router.post("/signup", async (req, res) => {
       )
     ) {
       return res.status(400).json({
-        msg: "Password is required and must have at least 8 characters, uppercase and lowercase letters, numbers and special characters.",
+        msg: "Password is required and must have at least 8 characters, uppercase and lowercase letters, numbers and special characters."
       });
     }
 
@@ -144,7 +144,7 @@ router.post("/signup", async (req, res) => {
     return res.status(201).json(result);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ msg: JSON.stringify(err) });
+    return res.status(500).json({ msg: "Invalid email/username. Please choose a different one" });
   }
 });
 
