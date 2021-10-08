@@ -3,7 +3,7 @@
 <p align='center'> <img src="https://media.giphy.com/media/y0XjAl4IXGDhiWa6YK/giphy.gif"/> </p>
 
 ## About the application
-
+**So Fit**. Your fitness social network. Finally!
 This web app aims to help people turning their fitness life into a more pleasant/exciting activity. Be a part of the So Fit community! Within our app **the main features are:**
 > - You can plan your workouts, based in a pre-defined exercise list;
 > - You can mark a workout as complete, and then share it with your friend;
